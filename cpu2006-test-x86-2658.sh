@@ -106,7 +106,7 @@ run_test() {
 	cd $cpu2006_dir
 	. ./shrc
 
-	runspec -c d05-2cpu.cfg all --rate 1
+	runspec -c e5-2658-2cpu.cfg all --rate 1
 	runspec -c e5-2658-2cpu.cfg all --rate 56
 }
 
