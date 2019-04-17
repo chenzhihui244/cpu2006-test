@@ -128,9 +128,9 @@ run_test() {
 	cd $cpu2006_dir
 	. ./shrc
 
-	runspec -c d05-2cpu.cfg fp --rate 1 --output_format html,pdf 
-	#runspec -c d05-2cpu.cfg all --rate 1 --output_format html,pdf 
-	#runspec -c d05-2cpu.cfg all --rate 64 --output_format html,pdf 
+	#runspec -c d05-2cpu.cfg fp --rate 1 --output_format html,pdf 
+	runspec -c d05-2cpu.cfg all --rate 1 --output_format html,pdf 
+	runspec -c d05-2cpu.cfg all --rate 64 --output_format html,pdf 
 }
 
 install_depency_centos
