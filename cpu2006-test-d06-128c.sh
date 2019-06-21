@@ -2,6 +2,7 @@
 
 iso_file=cpu2006-1.2.iso
 iso_mnt=/mnt
+gcc_74_lib64_path=/home/sysbench/gcc/lib64
 
 cpu2006_dir=cpu2006
 
@@ -65,7 +66,7 @@ fix_test_issue() {
 <flag name="F-fno-aggressive-loop-optimizations"
       class="optimization">
 <![CDATA[
-<p> 
+<p>
 gnu90 portability
 </p>
 ]]>
@@ -77,7 +78,7 @@ gnu90 portability
 -std=gnu90
 </example>
 <![CDATA[
-<p> 
+<p>
 gnu90 portability
 </p>
 ]]>
@@ -89,7 +90,7 @@ gnu90 portability
 -fpermissive
 </example>
 <![CDATA[
-<p> 
+<p>
 cxx portability
 </p>
 ]]>
@@ -145,15 +146,35 @@ test2() {
 	#runspec -c d06-2cpu-128c.cfg 482.sphinx3 --rate 1  -n 1 --no-reportable &&
 	#runspec -c d06-2cpu-128c.cfg 998.specrand --rate 1  -n 1 --no-reportable
 	#runspec -c d06-2cpu-128c.cfg 433.milc --rate 1  -n 1 --no-reportable
-	#runspec -c d05-2cpu.cfg fp --rate 1 --output_format html,pdf 
+	#runspec -c d05-2cpu.cfg fp --rate 1 --output_format html,pdf
 }
 
 run_test() {
 	cd $cpu2006_dir
+    ulimit -s unlimited
+
 	. ./shrc
 
-	runspec -c d06-2cpu-128c.cfg all --rate 1 --output_format txt,html,pdf 
-	runspec -c d06-2cpu-128c.cfg all --rate 128 --output_format txt,html,pdf 
+	runspec -c d06-2cpu-128c.cfg all --rate 1 --output_format txt,html,pdf
+	runspec -c d06-2cpu-128c.cfg all --rate 128 --output_format txt,html,pdf
+}
+
+run_test_opt() {
+	cd $cpu2006_dir
+
+    ulimit -s unlimited
+    export LD_LIBRARY_PATH=$gcc_74_lib64_path:$LD_LIBRARY_PATH
+
+	. ./shrc
+
+    #prerequest
+    # build gcc-7.x
+    # build glibc-2.2x
+
+	runspec -c d06-2cpu-128c-cint-opt.cfg int --rate 1 --output_format txt,html,pdf
+	runspec -c d06-2cpu-128c-cint-opt.cfg int --rate 128 --output_format txt,html,pdf
+	runspec -c d06-2cpu-128c-cfp-opt.cfg fp --rate 1 --output_format txt,html,pdf
+	runspec -c d06-2cpu-128c-cfp-opt.cfg fp --rate 128 --output_format txt,html,pdf
 }
 
 #install_depency_centos
