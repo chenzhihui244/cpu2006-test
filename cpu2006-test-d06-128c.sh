@@ -52,6 +52,10 @@ fix_prebuild() {
 	if [ ! $? -eq 0 ]; then
 		sed -i '162s%_GL_WARN_ON_USE%//_GL_WARN_ON_USE%' $cpu2006_dir/tools/src/specsum/gnulib/stdio.in.h
 	fi
+
+	# fix make-3.82 build error on ubuntu 18.04
+	sed -i '211 s#^#//&#' cpu2006/tools/src/make-3.82/glob/glob.c
+	sed -i '232 s#^#//&#' cpu2006/tools/src/make-3.82/glob/glob.c
 }
 
 fix_test_issue() {
@@ -163,7 +167,9 @@ run_test_opt() {
 	cd $cpu2006_dir
 
     ulimit -s unlimited
-    export LD_LIBRARY_PATH=$gcc_74_lib64_path:$LD_LIBRARY_PATH
+    echo always > /sys/kernel/mm/transparent_hugepage/enabled
+    echo always > /sys/kernel/mm/transparent_hugepage/defrag
+    #export LD_LIBRARY_PATH=$gcc_74_lib64_path:$LD_LIBRARY_PATH
 
 	. ./shrc
 
@@ -171,14 +177,15 @@ run_test_opt() {
     # build gcc-7.x
     # build glibc-2.2x
 
-	runspec -c d06-2cpu-128c-cint-opt.cfg int --rate 1 --output_format txt,html,pdf
-	runspec -c d06-2cpu-128c-cint-opt.cfg int --rate 128 --output_format txt,html,pdf
-	runspec -c d06-2cpu-128c-cfp-opt.cfg fp --rate 1 --output_format txt,html,pdf
-	runspec -c d06-2cpu-128c-cfp-opt.cfg fp --rate 128 --output_format txt,html,pdf
+	#runspec -c d06-2cpu-128c-cint-opt.cfg int --rate 1 -n 1 --no-reportable --output_format txt,html,pdf
+	#runspec -c d06-2cpu-128c-cint-opt.cfg int --rate 128 -n 1 --no-reportable  --output_format txt,html,pdf
+	runspec -c d06-2cpu-128c-cfp-opt.cfg fp --rate 1 -n 1 --no-reportable  --output_format txt,html,pdf
+	runspec -c d06-2cpu-128c-cfp-opt.cfg fp --rate 128 -n 1 --no-reportable  --output_format txt,html,pdf
 }
 
 #install_depency_centos
 #install_depency_ubuntu
-build_test
-run_test
+#build_test
+#run_test
 #test2
+run_test_opt
