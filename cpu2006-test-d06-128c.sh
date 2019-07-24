@@ -119,6 +119,8 @@ fi
 }
 
 [ -f $cpu2006_dir/config/d06-2cpu-128c.cfg ] || cp config/d06-2cpu-128c.cfg $cpu2006_dir/config/
+[ -f $cpu2006_dir/config/d06-2cpu-128c-cint-opt.cfg ] || cp config/d06-2cpu-128c-cint-opt.cfg $cpu2006_dir/config/
+[ -f $cpu2006_dir/config/d06-2cpu-128c-cfp-opt.cfg ] || cp config/d06-2cpu-128c-cfp-opt.cfg $cpu2006_dir/config/
 
 build_test() {
 	fix_prebuild
@@ -166,16 +168,16 @@ run_test() {
 run_test_opt() {
 	cd $cpu2006_dir
 
-    ulimit -s unlimited
-    echo always > /sys/kernel/mm/transparent_hugepage/enabled
-    echo always > /sys/kernel/mm/transparent_hugepage/defrag
-    #export LD_LIBRARY_PATH=$gcc_74_lib64_path:$LD_LIBRARY_PATH
+	ulimit -s unlimited
+	echo always > /sys/kernel/mm/transparent_hugepage/enabled
+	echo always > /sys/kernel/mm/transparent_hugepage/defrag
+	#export LD_LIBRARY_PATH=$gcc_74_lib64_path:$LD_LIBRARY_PATH
 
 	. ./shrc
 
-    #prerequest
-    # build gcc-7.x
-    # build glibc-2.2x
+	#prerequest
+	# build gcc-7.x
+	# build glibc-2.2x
 
 	#runspec -c d06-2cpu-128c-cint-opt.cfg int --rate 1 -n 1 --no-reportable --output_format txt,html,pdf
 	#runspec -c d06-2cpu-128c-cint-opt.cfg int --rate 128 -n 1 --no-reportable  --output_format txt,html,pdf
