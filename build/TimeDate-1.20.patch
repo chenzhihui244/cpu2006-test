@@ -1,0 +1,12 @@
+diff -Naur TimeDate-1.20/t/getdate.t TimeDate-1.20-fix/t/getdate.t
+--- TimeDate-1.20/t/getdate.t	2011-03-03 17:29:36.000000000 -0500
++++ TimeDate-1.20-fix/t/getdate.t	2020-01-14 08:37:39.569319953 -0500
+@@ -156,7 +156,7 @@
+ !;
+ 
+ require Time::Local;
+-my $offset = Time::Local::timegm(0,0,0,1,0,70);
++my $offset = Time::Local::timegm(0,0,0,1,0,1970);
+ 
+ @data = split(/\n/, $data);
+ 
